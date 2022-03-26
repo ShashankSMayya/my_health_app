@@ -12,12 +12,11 @@ class HomePage extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         actions: [
-
           Row(
             children: [
               const Text(
                 'Add New',
-                style: TextStyle(color: Colors.black,fontSize: 18),
+                style: TextStyle(color: Colors.black, fontSize: 18),
               ),
               IconButton(
                 onPressed: () {},
@@ -28,6 +27,42 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
+      body: DefaultTabController(
+          length: 5,
+          child: Column(
+            children: [
+              const TabBar(
+                isScrollable: true,
+                tabs: [
+                  Tab(
+                    text: 'Activities',
+                  ),
+                  Tab(
+                    text: 'Medications',
+                  ),
+                  Tab(
+                    text: 'Resources',
+                  ),
+                  Tab(
+                    text: 'Documents',
+                  ),
+                  Tab(
+                    text: 'Profile',
+                  )
+                ],
+              ),
+              Expanded(
+                  child: TabBarView(
+                children: [
+                  Container(),
+                  Container(),
+                  Container(),
+                  Container(),
+                  Container(),
+                ],
+              ))
+            ],
+          )),
     );
   }
 }
