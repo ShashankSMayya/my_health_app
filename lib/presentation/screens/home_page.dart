@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_health_app/presentation/screens/documents/documents_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -6,6 +7,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'My Health',
@@ -57,7 +59,7 @@ class HomePage extends StatelessWidget {
                   Container(),
                   Container(),
                   Container(),
-                  Container(),
+                 const DocumentsScreen(),
                   Container(),
                 ],
               ))
