@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_health_app/presentation/screens/documents/documents_screen.dart';
+import 'package:my_health_app/presentation/screens/medications/view_medications_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,7 +12,6 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'My Health',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         actions: [
           Row(
@@ -57,9 +57,9 @@ class HomePage extends StatelessWidget {
                   child: TabBarView(
                 children: [
                   Container(),
+                  const ViewMedicationsScreen(),
                   Container(),
-                  Container(),
-                 const DocumentsScreen(),
+                  const DocumentsScreen(),
                   Container(),
                 ],
               ))
