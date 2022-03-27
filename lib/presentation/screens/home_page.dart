@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_health_app/presentation/screens/documents/documents_screen.dart';
 import 'package:my_health_app/presentation/screens/medications/view_medications_screen.dart';
+import 'package:my_health_app/routes/route_arguments.dart';
+import 'package:my_health_app/routes/routes.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -8,7 +10,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'My Health',
@@ -21,7 +22,10 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(color: Colors.black, fontSize: 18),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.addEditMedication,
+                      arguments: const AddEditMedicineArgs(isEdit: false));
+                },
                 icon: const Icon(Icons.add_circle),
                 iconSize: 30,
               ),
@@ -33,25 +37,28 @@ class HomePage extends StatelessWidget {
           length: 5,
           child: Column(
             children: [
-              const TabBar(
-                isScrollable: true,
-                tabs: [
-                  Tab(
-                    text: 'Activities',
-                  ),
-                  Tab(
-                    text: 'Medications',
-                  ),
-                  Tab(
-                    text: 'Resources',
-                  ),
-                  Tab(
-                    text: 'Documents',
-                  ),
-                  Tab(
-                    text: 'Profile',
-                  )
-                ],
+              Container(
+                color: Colors.white,
+                child: const TabBar(
+                  isScrollable: true,
+                  tabs: [
+                    Tab(
+                      text: 'Activities',
+                    ),
+                    Tab(
+                      text: 'Medications',
+                    ),
+                    Tab(
+                      text: 'Resources',
+                    ),
+                    Tab(
+                      text: 'Documents',
+                    ),
+                    Tab(
+                      text: 'Profile',
+                    )
+                  ],
+                ),
               ),
               Expanded(
                   child: TabBarView(

@@ -111,7 +111,7 @@ class MedicationCard extends StatelessWidget {
                     ),
                     const Gap(4),
                     const Text(
-                      'This will help with maintiaining the overall blood glucose level and consistency',
+                      'This will help with maintaining the overall blood glucose level and consistency',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -123,7 +123,12 @@ class MedicationCard extends StatelessWidget {
               const Gap(10),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text('Medication added by you'),
+                child: Text(
+                  'Medication added by you',
+                  style: TextStyle(
+                    color: Colors.black38,
+                  ),
+                ),
               ),
               Row(
                 children: [

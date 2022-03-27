@@ -16,17 +16,16 @@ class _ViewMedicationsScreenState extends State<ViewMedicationsScreen>
     super.build(context);
     return Container(
       padding: const EdgeInsets.all(12.0),
-      color: Colors.indigo.shade50,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'DAILY',
             style: TextStyle(color: Colors.black38),
           ),
           Expanded(
             child: ListView.builder(
-                itemBuilder: (context, index) => MedicationCard(),
+                itemBuilder: (context, index) => const MedicationCard(),
                 itemCount: 10),
           ),
         ],

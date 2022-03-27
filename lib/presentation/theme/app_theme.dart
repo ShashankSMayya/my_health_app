@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:my_health_app/presentation/theme/app_colors.dart';
 
 class AppTheme {
   static ThemeData lightTheme(BuildContext context) => ThemeData(
+        primaryColor: AppColors.primary,
         primarySwatch: Colors.indigo,
-        scaffoldBackgroundColor: Colors.indigo.shade50,
+        scaffoldBackgroundColor: AppColors.scaffoldBackground,
         appBarTheme: const AppBarTheme(
           color: Colors.white,
           elevation: 0,

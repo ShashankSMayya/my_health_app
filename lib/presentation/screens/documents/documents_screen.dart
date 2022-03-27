@@ -16,7 +16,6 @@ class _DocumentsScreenState extends State<DocumentsScreen>
     super.build(context);
     return Container(
       padding: const EdgeInsets.all(12),
-      color: Colors.indigo.shade50,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
