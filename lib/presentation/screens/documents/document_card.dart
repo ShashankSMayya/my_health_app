@@ -1,9 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
+import 'package:my_health_app/data/constants/enums.dart';
+import 'package:my_health_app/data/constants/hive_constants.dart';
+import 'package:my_health_app/data/models/document_model.dart';
 
 class DocumentCard extends StatelessWidget {
-  const DocumentCard({Key? key}) : super(key: key);
+  final DocumentModel document;
+
+  //This Key is used to identify the document key in Hive Box used for updating and deleting the document.
+  final int documentKey;
+
+  const DocumentCard(
+      {Key? key, required this.document, required this.documentKey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +30,24 @@ class DocumentCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Placeholder(
-            fallbackHeight: 60,
-            fallbackWidth: 40,
-          ),
+          document.fileType == FileTypes.pdf
+              ? const Icon(Icons.description)
+              : Image.memory(document.fileBytes, height: 50, width: 50),
           const Gap(20),
           Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Document Name',
-                style: TextStyle(fontSize: 16),
+              Text(
+                document.name,
+                style: const TextStyle(fontSize: 16),
               ),
               const Gap(5),
               Row(
                 children: [
-                  const Text(
-                    'JPEG',
-                    style: TextStyle(color: Colors.black38, fontSize: 12),
+                  Text(
+                    document.fileExtension.toUpperCase(),
+                    style: const TextStyle(color: Colors.black38, fontSize: 12),
                   ),
                   const Gap(10),
                   Container(
@@ -47,16 +57,17 @@ class DocumentCard extends StatelessWidget {
                         shape: BoxShape.circle, color: Colors.black38),
                   ),
                   const Gap(10),
-                  const Text(
-                    '0.5 MB',
-                    style: TextStyle(color: Colors.black38, fontSize: 12),
+                  //File Size in MB
+                  Text(
+                    document.fileSize,
+                    style: const TextStyle(color: Colors.black38, fontSize: 12),
                   ),
                 ],
               ),
               const Gap(10),
-              const Text(
-                'Uploaded on: 14 Sep 2022',
-                style: TextStyle(fontSize: 11, color: Colors.black38),
+              Text(
+                'Uploaded on: ${DateFormat('dd-MMM-yyyy hh:mm:ss').format(document.uploadDate)}',
+                style: const TextStyle(fontSize: 11, color: Colors.black38),
               ),
             ],
           )),
@@ -64,9 +75,12 @@ class DocumentCard extends StatelessWidget {
           GestureDetector(
             child: const Icon(
               Icons.delete_outline,
-              size: 16,
+              size: 24,
             ),
-            onTap: () {},
+            onTap: () async {
+              final box = Hive.box<DocumentModel>(HiveBoxNames.documentBoxName);
+              await box.deleteAt(documentKey);
+            },
           ),
         ],
       ),

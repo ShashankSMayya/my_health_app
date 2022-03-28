@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:my_health_app/data/constants/enums.dart';
+import 'package:my_health_app/data/constants/hive_constants.dart';
+import 'package:my_health_app/data/models/document_model.dart';
 import 'package:my_health_app/presentation/theme/app_theme.dart';
 import 'package:my_health_app/routes/route_generator.dart';
 import 'package:my_health_app/routes/routes.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox<DocumentModel>(HiveBoxNames.documentBoxName);
+  Hive.registerAdapter(DocumentModelAdapter());
+  Hive.registerAdapter(FileTypesAdapter());
   runApp(const MyApp());
 }
 
