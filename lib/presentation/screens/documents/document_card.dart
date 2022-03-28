@@ -31,7 +31,7 @@ class DocumentCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           document.fileType == FileTypes.pdf
-              ? const Icon(Icons.description)
+              ? const Icon(Icons.description,size: 50,)
               : Image.memory(document.fileBytes, height: 50, width: 50),
           const Gap(20),
           Expanded(
@@ -79,6 +79,7 @@ class DocumentCard extends StatelessWidget {
             ),
             onTap: () async {
               final box = Hive.box<DocumentModel>(HiveBoxNames.documentBoxName);
+              print(documentKey);
               await box.deleteAt(documentKey);
             },
           ),

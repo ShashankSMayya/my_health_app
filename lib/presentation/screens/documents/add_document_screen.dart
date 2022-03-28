@@ -177,10 +177,11 @@ class _AddDocumentScreenState extends State<AddDocumentScreen> {
                                               FileUtils.getFileSizeString(
                                                   bytes: _documentFile!
                                                       .lengthSync());
+                                          Navigator.pop(context);
                                         });
                                       }
                                     },
-                                    icon: const Icon(Icons.description),
+                                    icon: const Icon(Icons.description,),
                                     label: const Text('Document'),
                                   ),
                                 ],

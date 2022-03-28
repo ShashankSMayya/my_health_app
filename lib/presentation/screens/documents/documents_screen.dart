@@ -42,9 +42,11 @@ class _DocumentsScreenState extends State<DocumentsScreen>
                       itemBuilder: (context, index) {
                         final DocumentModel document =
                             box.values.elementAt(index);
-                        print(box.keys.elementAt(index));
+
                         return DocumentCard(
-                            document: document, documentKey: box.keys.elementAt(index));
+                          document: document,
+                          documentKey: index,
+                        );
                       },
                     );
                   })),
