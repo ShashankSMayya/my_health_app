@@ -1,17 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_health_app/data/constants/enums.dart';
-import 'package:my_health_app/data/constants/hive_constants.dart';
 import 'package:my_health_app/data/models/document_model.dart';
+import 'package:my_health_app/di/get_it.dart' as get_it;
+import 'package:my_health_app/presentation/stores/documents_store.dart';
 import 'package:my_health_app/presentation/theme/app_theme.dart';
 import 'package:my_health_app/routes/route_generator.dart';
 import 'package:my_health_app/routes/routes.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox<DocumentModel>(HiveBoxNames.documentBoxName);
   Hive.registerAdapter(DocumentModelAdapter());
   Hive.registerAdapter(FileTypesAdapter());
+  unawaited(get_it.init());
   runApp(const MyApp());
 }
 
@@ -27,11 +31,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme(context),
-      onGenerateRoute: _routeGenerator.generateRoute,
-      initialRoute: Routes.home,
+    return MultiProvider(
+      providers: [
+        Provider(create: (_) => get_it.getIt<DocumentsStore>()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme(context),
+        onGenerateRoute: _routeGenerator.generateRoute,
+        initialRoute: Routes.home,
+      ),
     );
   }
 }

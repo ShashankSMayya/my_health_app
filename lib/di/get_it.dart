@@ -1,5 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:my_health_app/data/data_sources/data_sources.dart';
+import 'package:my_health_app/domain/usecases/documents/add_document.dart';
+import 'package:my_health_app/domain/usecases/documents/get_documents.dart';
+import 'package:my_health_app/presentation/stores/documents_store.dart';
 import 'package:my_health_app/routes/route_generator.dart';
 
 import '../data/repositories/repositories_impl.dart';
@@ -38,5 +41,11 @@ Future init() async {
 
   // Use cases Initialization
 
-  // Mobx Provider Initialization
+  getIt.registerFactory<GetDocuments>(() => GetDocuments(getIt()));
+
+  getIt.registerFactory<AddDocument>(() => AddDocument(getIt()));
+
+  // Mobx Store Initialization
+
+  getIt.registerFactory<DocumentsStore>(() => DocumentsStore(getIt()));
 }

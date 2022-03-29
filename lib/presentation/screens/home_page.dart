@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_health_app/presentation/screens/documents/documents_screen.dart';
 import 'package:my_health_app/presentation/screens/medications/view_medications_screen.dart';
+import 'package:my_health_app/presentation/stores/documents_store.dart';
 import 'package:my_health_app/routes/route_arguments.dart';
 import 'package:my_health_app/routes/routes.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,7 +68,7 @@ class HomePage extends StatelessWidget {
                   Container(),
                   const ViewMedicationsScreen(),
                   Container(),
-                  const DocumentsScreen(),
+                  DocumentsScreen(store: context.read<DocumentsStore>()),
                   Container(),
                 ],
               ))
