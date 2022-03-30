@@ -1,7 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:my_health_app/data/data_sources/data_sources.dart';
 import 'package:my_health_app/domain/usecases/documents/add_document.dart';
+import 'package:my_health_app/domain/usecases/documents/delete_document.dart';
 import 'package:my_health_app/domain/usecases/documents/get_documents.dart';
+import 'package:my_health_app/domain/usecases/medications/add_medications.dart';
+import 'package:my_health_app/domain/usecases/medications/delete_medication.dart';
+import 'package:my_health_app/domain/usecases/medications/update_medications.dart';
 import 'package:my_health_app/presentation/stores/documents_store.dart';
 import 'package:my_health_app/routes/route_generator.dart';
 
@@ -44,6 +48,14 @@ Future init() async {
   getIt.registerFactory<GetDocuments>(() => GetDocuments(getIt()));
 
   getIt.registerFactory<AddDocument>(() => AddDocument(getIt()));
+
+  getIt.registerFactory<DeleteDocument>(() => DeleteDocument(getIt()));
+
+  getIt.registerFactory<AddMedication>(() => AddMedication(getIt()));
+
+  getIt.registerFactory<UpdateMedication>(() => UpdateMedication(getIt()));
+
+  getIt.registerFactory<DeleteMedication>(() => DeleteMedication(getIt()));
 
   // Mobx Store Initialization
 

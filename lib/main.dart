@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_health_app/data/constants/enums.dart';
 import 'package:my_health_app/data/models/document_model.dart';
+import 'package:my_health_app/data/models/medicine_info.dart';
 import 'package:my_health_app/di/get_it.dart' as get_it;
 import 'package:my_health_app/presentation/stores/documents_store.dart';
 import 'package:my_health_app/presentation/theme/app_theme.dart';
@@ -15,6 +16,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(DocumentModelAdapter());
   Hive.registerAdapter(FileTypesAdapter());
+  Hive.registerAdapter(MedicineInfoAdapter());
   unawaited(get_it.init());
   runApp(const MyApp());
 }

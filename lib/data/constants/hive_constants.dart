@@ -4,6 +4,7 @@ class HiveTypeIds {
   static const int documentTypeId = 0;
   static const int medicationTypeId = 1;
   static const int fileTypesTypeId = 2;
+  static const int medicineInfoTypeId = 3;
 }
 
 class HiveBoxNames {
