@@ -20,6 +20,12 @@ abstract class DocumentsStoreBase with Store {
   ObservableFuture<Either<AppError, List<DocumentModel>>>? getDocumentsFuture;
 
   @observable
+  ObservableFuture<Either<AppError, void>>? deleteDocumentFuture;
+
+  @observable
+  ObservableFuture<Either<AppError, void>>? addDocumentFuture;
+
+  @observable
   String? errorText;
 
   @action
@@ -34,13 +40,17 @@ abstract class DocumentsStoreBase with Store {
 
   @action
   Future<void> addDocument(DocumentModel document) async {
-    await _documentsRepository.addDocument(document);
+    addDocumentFuture =
+        ObservableFuture(_documentsRepository.addDocument(document));
+    await addDocumentFuture;
     documentList.add(document);
   }
 
   @action
   Future<void> deleteDocument(int index) async {
-    await _documentsRepository.deleteDocument(index);
+    deleteDocumentFuture =
+        ObservableFuture(_documentsRepository.deleteDocument(index));
+    await deleteDocumentFuture;
     documentList.removeAt(index);
   }
 }

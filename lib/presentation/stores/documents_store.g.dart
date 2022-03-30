@@ -42,6 +42,39 @@ mixin _$DocumentsStore on DocumentsStoreBase, Store {
     });
   }
 
+  final _$deleteDocumentFutureAtom =
+      Atom(name: 'DocumentsStoreBase.deleteDocumentFuture');
+
+  @override
+  ObservableFuture<Either<AppError, void>>? get deleteDocumentFuture {
+    _$deleteDocumentFutureAtom.reportRead();
+    return super.deleteDocumentFuture;
+  }
+
+  @override
+  set deleteDocumentFuture(ObservableFuture<Either<AppError, void>>? value) {
+    _$deleteDocumentFutureAtom.reportWrite(value, super.deleteDocumentFuture,
+        () {
+      super.deleteDocumentFuture = value;
+    });
+  }
+
+  final _$addDocumentFutureAtom =
+      Atom(name: 'DocumentsStoreBase.addDocumentFuture');
+
+  @override
+  ObservableFuture<Either<AppError, void>>? get addDocumentFuture {
+    _$addDocumentFutureAtom.reportRead();
+    return super.addDocumentFuture;
+  }
+
+  @override
+  set addDocumentFuture(ObservableFuture<Either<AppError, void>>? value) {
+    _$addDocumentFutureAtom.reportWrite(value, super.addDocumentFuture, () {
+      super.addDocumentFuture = value;
+    });
+  }
+
   final _$errorTextAtom = Atom(name: 'DocumentsStoreBase.errorText');
 
   @override
@@ -86,6 +119,8 @@ mixin _$DocumentsStore on DocumentsStoreBase, Store {
     return '''
 documentList: ${documentList},
 getDocumentsFuture: ${getDocumentsFuture},
+deleteDocumentFuture: ${deleteDocumentFuture},
+addDocumentFuture: ${addDocumentFuture},
 errorText: ${errorText}
     ''';
   }

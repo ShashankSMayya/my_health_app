@@ -17,10 +17,55 @@ class DocumentsScreen<T extends DocumentsStore> extends StatefulWidget {
 
 class _DocumentsScreenState extends State<DocumentsScreen>
     with AutomaticKeepAliveClientMixin {
+  late final ReactionDisposer _disposer;
+
   @override
   void initState() {
     super.initState();
     widget.store.getDocuments();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    //Delete document reaction
+    _disposer = reaction(
+      (_) => widget.store.deleteDocumentFuture?.status,
+      ( result) {
+        if (result == FutureStatus.fulfilled) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Document deleted successfully'),
+            ),
+          );
+
+        }
+        if (result == FutureStatus.rejected) {
+
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Error deleting document'),
+            ),
+          );
+        }
+        if (result == FutureStatus.pending) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Deleting document...'),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _disposer();
+    super.dispose();
   }
 
   @override

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:mobx/mobx.dart';
 import 'package:my_health_app/data/constants/enums.dart';
 import 'package:my_health_app/data/models/document_model.dart';
 import 'package:my_health_app/presentation/stores/documents_store.dart';
@@ -22,11 +23,54 @@ class AddDocumentScreen extends StatefulWidget {
 
 class _AddDocumentScreenState extends State<AddDocumentScreen> {
   final _formKey = GlobalKey<FormState>();
+  late final ReactionDisposer _disposer;
   String? _documentName;
   String? _fileName;
   String? _fileSize;
   File? _documentFile;
   FileTypes? _fileType;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _disposer = reaction(
+      (_) => context.read<DocumentsStore>().addDocumentFuture?.status,
+      (result) {
+        print(result);
+        if (result == FutureStatus.fulfilled) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Document added successfully'),
+            ),
+          );
+          Navigator.pop(context);
+        }
+        if (result == FutureStatus.rejected) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Error adding document'),
+            ),
+          );
+        }
+        if (result == FutureStatus.pending) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Adding document...'),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _disposer();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -234,12 +278,6 @@ class _AddDocumentScreenState extends State<AddDocumentScreen> {
                             uploadDate: DateTime.now(),
                             lastModified: DateTime.now(),
                           ));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('File added successfully'),
-                            ),
-                          );
-                          Navigator.pop(context);
                         } else {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
