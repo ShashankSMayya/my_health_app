@@ -31,7 +31,7 @@ class _DocumentsScreenState extends State<DocumentsScreen>
     //Delete document reaction
     _disposer = reaction(
       (_) => widget.store.deleteDocumentFuture?.status,
-      ( result) {
+      (result) {
         if (result == FutureStatus.fulfilled) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -39,10 +39,8 @@ class _DocumentsScreenState extends State<DocumentsScreen>
               content: Text('Document deleted successfully'),
             ),
           );
-
         }
         if (result == FutureStatus.rejected) {
-
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

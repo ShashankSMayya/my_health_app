@@ -16,7 +16,13 @@ class RouteGenerator {
       case Routes.addDocument:
         return MaterialPageRoute(builder: (_) => const AddDocumentScreen());
       case Routes.viewDocument:
-        return MaterialPageRoute(builder: (_) => const ViewDocumentScreen());
+        final data = args as ViewDocumentArgs;
+
+        return MaterialPageRoute(
+            builder: (_) => ViewDocumentScreen(
+                  document: data.document,
+                  documentIndex: data.documentIndex,
+                ));
       case Routes.addEditMedication:
         final data = args as AddEditMedicineArgs?;
         return MaterialPageRoute(

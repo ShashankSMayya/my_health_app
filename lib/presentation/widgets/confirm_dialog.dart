@@ -63,7 +63,7 @@ class ConfirmDialog extends StatelessWidget {
                     const Gap(10),
                     OutlinedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
+                      child: const Text('Cancel',style: TextStyle(color: Colors.black),),
                     ),
                   ],
                 )
