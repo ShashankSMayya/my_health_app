@@ -47,11 +47,11 @@ class MedicationCard extends StatelessWidget {
             Expanded(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('Medication Name'),
-                Gap(5),
-                Text('THRICE',
-                    style: TextStyle(
+              children: [
+                Text(medication.medicineInfo.name),
+                const Gap(5),
+                Text(medication.doseUnit,
+                    style: const TextStyle(
                       fontSize: 12,
                     )),
               ],

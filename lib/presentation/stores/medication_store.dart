@@ -57,7 +57,7 @@ abstract class MedicationStoreBase with Store {
   @action
   Future<void> getMedications() async {
     medicationList.clear();
-    getMedicationsFuture ??= ObservableFuture(_getMedications(NoParams()));
+    getMedicationsFuture = ObservableFuture(_getMedications(NoParams()));
     final response = await getMedicationsFuture!;
     response.fold((l) => errorText = 'Some error occurred',
         (r) => medicationList.addAll(r));
@@ -65,7 +65,7 @@ abstract class MedicationStoreBase with Store {
 
   @action
   Future<void> addMedication(MedicationModel medication) async {
-    addMedicationFuture ??= ObservableFuture(
+    addMedicationFuture = ObservableFuture(
         _addMedication(AddMedicationParams(medicationModel: medication)));
     final response = await addMedicationFuture!;
     response.fold((l) => errorText = 'Some error occurred',
@@ -74,7 +74,7 @@ abstract class MedicationStoreBase with Store {
 
   @action
   Future<void> deleteMedication(int index) async {
-    deleteMedicationFuture ??= ObservableFuture(
+    deleteMedicationFuture = ObservableFuture(
         _deleteMedication(DeleteMedicationParams(medicationId: index)));
     final response = await deleteMedicationFuture!;
     response.fold((l) => errorText = 'Some error occurred',
@@ -83,7 +83,7 @@ abstract class MedicationStoreBase with Store {
 
   @action
   Future<void> updateMedication(MedicationModel medication, int index) async {
-    updateMedicationFuture ??= ObservableFuture(_updateMedication(
+    updateMedicationFuture = ObservableFuture(_updateMedication(
         UpdateMedicationParams(medicationId: index, medication: medication)));
     final response = await updateMedicationFuture!;
     response.fold((l) => errorText = 'Some error occurred',
