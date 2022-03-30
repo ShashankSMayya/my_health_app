@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:my_health_app/data/constants/enums.dart';
 import 'package:my_health_app/data/models/document_model.dart';
 import 'package:my_health_app/presentation/stores/documents_store.dart';
+import 'package:my_health_app/presentation/widgets/confirm_dialog.dart';
 import 'package:provider/provider.dart';
 
 class DocumentCard extends StatelessWidget {
@@ -12,8 +13,7 @@ class DocumentCard extends StatelessWidget {
   //This Key is used to identify the document key in Hive Box used for updating and deleting the document.
   final int docIndex;
 
-  const DocumentCard(
-      {Key? key, required this.document, required this.docIndex})
+  const DocumentCard({Key? key, required this.document, required this.docIndex})
       : super(key: key);
 
   @override
@@ -81,7 +81,22 @@ class DocumentCard extends StatelessWidget {
               size: 24,
             ),
             onTap: () async {
-              context.read<DocumentsStore>().deleteDocument(docIndex);
+              showDialog(
+                context: context,
+                builder: (_) => ConfirmDialog(
+                  title: 'Delete Document',
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    size: 64,
+                    color: Colors.white,
+                  ),
+                  message: 'Are you sure you want to delete this document?',
+                  onConfirm: () async {
+                    context.read<DocumentsStore>().deleteDocument(docIndex);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              );
             },
           ),
         ],
