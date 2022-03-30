@@ -1,8 +1,22 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
+import 'package:my_health_app/data/constants/enums.dart';
+import 'package:my_health_app/data/models/medication_model.dart';
+import 'package:my_health_app/presentation/stores/medication_store.dart';
+import 'package:my_health_app/presentation/widgets/confirm_dialog.dart';
+import 'package:my_health_app/routes/route_arguments.dart';
+import 'package:my_health_app/routes/routes.dart';
+import 'package:provider/provider.dart';
 
 class MedicationCard extends StatelessWidget {
-  const MedicationCard({Key? key}) : super(key: key);
+  final MedicationModel medication;
+  final int index;
+
+  const MedicationCard(
+      {Key? key, required this.medication, required this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +30,19 @@ class MedicationCard extends StatelessWidget {
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Placeholder(
-              fallbackHeight: 50,
-              fallbackWidth: 50,
-            ),
+            medication.medicineInfo.imageUrl == null
+                ? const Icon(
+                    Icons.medication,
+                    size: 50,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: medication.medicineInfo.imageUrl!,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    width: 50,
+                    height: 50,
+                  ),
             const Gap(10),
             Expanded(
                 child: Column(
@@ -52,17 +75,25 @@ class MedicationCard extends StatelessWidget {
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               _DrugInfoText(
-                                  title: 'Drug Class', value: 'Liptropics'),
+                                  title: 'Drug Class',
+                                  value: medication.medicineInfo.drugClass),
                               _DrugInfoText(
-                                  title: 'Drug Code', value: '123223'),
-                              _DrugInfoText(title: 'Form', value: 'Capsule'),
-                              _DrugInfoText(title: 'Strength', value: '500 mg'),
+                                  title: 'Drug Code',
+                                  value: medication.medicineInfo.drugCode),
                               _DrugInfoText(
+                                  title: 'Form',
+                                  value: medication.medicineInfo.drugForm),
+                              _DrugInfoText(
+                                  title: 'Strength',
+                                  value: medication.medicineInfo.drugStrength),
+                              const _DrugInfoText(
                                   title: 'Dosing Hours', value: '08:30 AM'),
                               _DrugInfoText(
-                                  title: 'Date Added', value: '22 Mar 2020'),
+                                  title: 'Date Added',
+                                  value: DateFormat('dd MMM yyyy')
+                                      .format(medication.addedDate)),
                             ],
                           ),
                         ),
@@ -75,20 +106,26 @@ class MedicationCard extends StatelessWidget {
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               _DrugInfoText(
                                   title: 'Drug Brand',
-                                  value: 'Shangai Pharmaceuticals Limited'),
+                                  value: medication.medicineInfo.drugBrand),
                               _DrugInfoText(
-                                  title: 'Drug Type', value: 'Generic'),
+                                  title: 'Drug Type',
+                                  value: medication.medicineInfo.drugType),
                               _DrugInfoText(
                                   title: 'Route of Administration',
-                                  value: 'Oral'),
+                                  value: medication
+                                      .medicineInfo.administrationRoute),
                               _DrugInfoText(title: 'Dose', value: '2 Drops'),
                               _DrugInfoText(
-                                  title: 'Frequency', value: 'Once a Day'),
+                                  title: 'Frequency',
+                                  value:
+                                      '${medication.frequency} times a ${medication.frequencyType == FrequencyTypes.day ? 'day' : 'week'}'),
                               _DrugInfoText(
-                                  title: 'Last Updated', value: '22 Apr 2020'),
+                                  title: 'Last Updated',
+                                  value: DateFormat('dd MMM yyyy')
+                                      .format(medication.addedDate)),
                             ],
                           ),
                         ),
@@ -100,9 +137,9 @@ class MedicationCard extends StatelessWidget {
                       style: TextStyle(color: Colors.black38),
                     ),
                     const Gap(4),
-                    const Text(
-                      'To be taken before breakfast and dinner with warm water',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      medication.instructions,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const Gap(10),
                     const Text(
@@ -110,9 +147,9 @@ class MedicationCard extends StatelessWidget {
                       style: TextStyle(color: Colors.black38),
                     ),
                     const Gap(4),
-                    const Text(
-                      'This will help with maintaining the overall blood glucose level and consistency',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      medication.prescriptionReason,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -132,9 +169,31 @@ class MedicationCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  TextButton(onPressed: () {}, child: const Text('Edit')),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.addEditMedication,
+                            arguments: AddEditMedicineArgs(
+                                isEdit: true,
+                                medicationIndex: index,
+                                medicationModel: medication));
+                      },
+                      child: const Text('Edit')),
                   const Gap(10),
-                  TextButton(onPressed: () {}, child: const Text('Delete')),
+                  TextButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) => ConfirmDialog(
+                                  title: 'Delete Medication',
+                                  message:
+                                      'Are you sure you want to delete this medication?',
+                                  icon: const Icon(Icons.medication),
+                                  onConfirm: () => context
+                                      .read<MedicationStore>()
+                                      .deleteMedication(index),
+                                ));
+                      },
+                      child: const Text('Delete')),
                 ],
               )
             ],

@@ -28,6 +28,8 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => AddEditMedicationScreen(
                   isEdit: data?.isEdit ?? false,
+                  index: data?.medicationIndex,
+                  medicationModel: data?.medicationModel,
                 ));
       default:
         return MaterialPageRoute(

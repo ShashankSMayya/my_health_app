@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_health_app/presentation/screens/documents/documents_screen.dart';
 import 'package:my_health_app/presentation/screens/medications/view_medications_screen.dart';
 import 'package:my_health_app/presentation/stores/documents_store.dart';
+import 'package:my_health_app/presentation/stores/medication_store.dart';
 import 'package:my_health_app/routes/route_arguments.dart';
 import 'package:my_health_app/routes/routes.dart';
 import 'package:provider/provider.dart';
@@ -36,40 +37,40 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: DefaultTabController(
-          length: 5,
+          length: 2,
           child: Column(
             children: [
               Container(
                 color: Colors.white,
                 child: const TabBar(
-                  isScrollable: true,
+
                   tabs: [
-                    Tab(
-                      text: 'Activities',
-                    ),
+                    // Tab(
+                    //   text: 'Activities',
+                    // ),
                     Tab(
                       text: 'Medications',
                     ),
-                    Tab(
-                      text: 'Resources',
-                    ),
-                    Tab(
-                      text: 'Documents'
-                    ),
-                    Tab(
-                      text: 'Profile',
-                    )
+                    // Tab(
+                    //   text: 'Resources',
+                    // ),
+                    Tab(text: 'Documents'),
+                    // Tab(
+                    //   text: 'Profile',
+                    // )
                   ],
                 ),
               ),
               Expanded(
                   child: TabBarView(
                 children: [
-                  Container(),
-                  const ViewMedicationsScreen(),
-                  Container(),
+                  // Container(),
+                  ViewMedicationsScreen(
+                    store: context.read<MedicationStore>(),
+                  ),
+                  // Container(),
                   DocumentsScreen(store: context.read<DocumentsStore>()),
-                  Container(),
+                  // Container(),
                 ],
               ))
             ],

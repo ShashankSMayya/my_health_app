@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:hive/hive.dart';
@@ -25,7 +24,7 @@ class DocumentModel {
   @HiveField(6)
   final DateTime lastModified;
 
-  String get fileSize => FileUtils.getFileSizeString(bytes: 10000);
+  String get fileSize => FileUtils.getFileSizeString(bytes: fileBytes.length);
 
   const DocumentModel({
     required this.name,

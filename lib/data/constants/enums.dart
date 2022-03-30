@@ -10,3 +10,11 @@ enum FileTypes {
   @HiveField(1)
   pdf,
 }
+
+@HiveType(typeId: HiveTypeIds.daysTypeId)
+enum FrequencyTypes {
+  @HiveField(0)
+  day,
+  @HiveField(1)
+  week,
+}

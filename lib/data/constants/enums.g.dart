@@ -44,3 +44,42 @@ class FileTypesAdapter extends TypeAdapter<FileTypes> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class FrequencyTypesAdapter extends TypeAdapter<FrequencyTypes> {
+  @override
+  final int typeId = 4;
+
+  @override
+  FrequencyTypes read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return FrequencyTypes.day;
+      case 1:
+        return FrequencyTypes.week;
+      default:
+        return FrequencyTypes.day;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, FrequencyTypes obj) {
+    switch (obj) {
+      case FrequencyTypes.day:
+        writer.writeByte(0);
+        break;
+      case FrequencyTypes.week:
+        writer.writeByte(1);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FrequencyTypesAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

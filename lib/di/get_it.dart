@@ -5,8 +5,11 @@ import 'package:my_health_app/domain/usecases/documents/delete_document.dart';
 import 'package:my_health_app/domain/usecases/documents/get_documents.dart';
 import 'package:my_health_app/domain/usecases/medications/add_medications.dart';
 import 'package:my_health_app/domain/usecases/medications/delete_medication.dart';
+import 'package:my_health_app/domain/usecases/medications/get_medications.dart';
+import 'package:my_health_app/domain/usecases/medications/get_medicine_list.dart';
 import 'package:my_health_app/domain/usecases/medications/update_medications.dart';
 import 'package:my_health_app/presentation/stores/documents_store.dart';
+import 'package:my_health_app/presentation/stores/medication_store.dart';
 import 'package:my_health_app/routes/route_generator.dart';
 
 import '../data/repositories/repositories_impl.dart';
@@ -53,11 +56,24 @@ Future init() async {
 
   getIt.registerFactory<AddMedication>(() => AddMedication(getIt()));
 
+  getIt.registerFactory<GetMedications>(() => GetMedications(getIt()));
+
   getIt.registerFactory<UpdateMedication>(() => UpdateMedication(getIt()));
+
+  getIt.registerFactory<GetMedicineList>(() => GetMedicineList(getIt()));
 
   getIt.registerFactory<DeleteMedication>(() => DeleteMedication(getIt()));
 
+
+
   // Mobx Store Initialization
 
-  getIt.registerFactory<DocumentsStore>(() => DocumentsStore(getIt()));
+  getIt.registerFactory<DocumentsStore>(() => DocumentsStore(
+      addDocument: getIt(), getDocuments: getIt(), deleteDocument: getIt()));
+
+  getIt.registerFactory<MedicationStore>(() => MedicationStore(
+      addMedication: getIt(),
+      updateMedication: getIt(),
+      deleteMedication: getIt(),
+      getMedications: getIt()));
 }
