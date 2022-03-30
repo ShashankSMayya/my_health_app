@@ -17,4 +17,19 @@ enum FrequencyTypes {
   day,
   @HiveField(1)
   week,
+
+
+}
+
+extension on FrequencyTypes {
+  String get name {
+    switch (this) {
+      case FrequencyTypes.day:
+        return 'Day';
+      case FrequencyTypes.week:
+        return 'Week';
+      default:
+        return 'Day';
+    }
+  }
 }

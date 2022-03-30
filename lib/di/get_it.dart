@@ -1,4 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:my_health_app/core/api/api_client.dart';
 import 'package:my_health_app/data/data_sources/data_sources.dart';
 import 'package:my_health_app/domain/usecases/documents/add_document.dart';
 import 'package:my_health_app/domain/usecases/documents/delete_document.dart';
@@ -22,6 +25,12 @@ Future init() async {
 
   getIt.registerSingleton<RouteGenerator>(RouteGenerator());
 
+  getIt.registerSingleton<Dio>(Dio());
+
+  getIt.registerSingleton<DioAdapter>(DioAdapter(dio: getIt()));
+
+  getIt.registerSingleton<ApiClient>(ApiClient(getIt(), getIt()));
+
   // Data source Initialization
 
   getIt.registerLazySingleton<DocumentsRemoteDataSource>(
@@ -31,7 +40,7 @@ Future init() async {
       () => DocumentsLocalDataSourceImpl());
 
   getIt.registerLazySingleton<MedicationsRemoteDataSource>(
-      () => MedicationsRemoteDataSourceImpl());
+      () => MedicationsRemoteDataSourceImpl(getIt()));
 
   getIt.registerLazySingleton<MedicationsLocalDataSource>(
       () => MedicationsLocalDataSourceImpl());
@@ -63,8 +72,6 @@ Future init() async {
   getIt.registerFactory<GetMedicineList>(() => GetMedicineList(getIt()));
 
   getIt.registerFactory<DeleteMedication>(() => DeleteMedication(getIt()));
-
-
 
   // Mobx Store Initialization
 

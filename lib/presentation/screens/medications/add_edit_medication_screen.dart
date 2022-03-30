@@ -255,6 +255,13 @@ class _AddEditMedicationScreenState extends State<AddEditMedicationScreen> {
                                 color: Colors.white,
                                 child: DropdownSearch(
                                   selectedItem: _frequencyType,
+                                  dropdownSearchDecoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.only(left: 10)),
+                                  itemAsString: (FrequencyTypes? value) {
+                                    return value == FrequencyTypes.day
+                                        ? 'Day'
+                                        : 'Week';
+                                  },
                                   mode: Mode.MENU,
                                   onChanged: (FrequencyTypes? value) {
                                     setState(() {

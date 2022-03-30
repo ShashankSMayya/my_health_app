@@ -187,7 +187,11 @@ class MedicationCard extends StatelessWidget {
                                   title: 'Delete Medication',
                                   message:
                                       'Are you sure you want to delete this medication?',
-                                  icon: const Icon(Icons.medication),
+                                  icon: const Icon(
+                                    Icons.delete_outline,
+                                    color: Colors.white,
+                                    size: 64,
+                                  ),
                                   onConfirm: () => context
                                       .read<MedicationStore>()
                                       .deleteMedication(index),
