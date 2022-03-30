@@ -1,16 +1,17 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:my_health_app/data/constants/enums.dart';
-import 'package:my_health_app/data/constants/hive_constants.dart';
 import 'package:my_health_app/data/models/document_model.dart';
+import 'package:my_health_app/presentation/stores/documents_store.dart';
 import 'package:my_health_app/presentation/theme/app_colors.dart';
 import 'package:my_health_app/utils/file_utils.dart';
+import 'package:provider/provider.dart';
 
 class AddDocumentScreen extends StatefulWidget {
   const AddDocumentScreen({Key? key}) : super(key: key);
@@ -181,7 +182,9 @@ class _AddDocumentScreenState extends State<AddDocumentScreen> {
                                         });
                                       }
                                     },
-                                    icon: const Icon(Icons.description,),
+                                    icon: const Icon(
+                                      Icons.description,
+                                    ),
                                     label: const Text('Document'),
                                   ),
                                 ],
@@ -218,12 +221,12 @@ class _AddDocumentScreenState extends State<AddDocumentScreen> {
                         if (_formKey.currentState!.validate() &&
                             _documentFile != null) {
                           _formKey.currentState!.save();
-                          final Box<DocumentModel> box =
-                              Hive.box<DocumentModel>(
-                                  HiveBoxNames.documentBoxName);
-                          await box.add(DocumentModel(
+                          Uint8List bytes = await _documentFile!.readAsBytes();
+                          final docStore = context.read<DocumentsStore>();
+
+                          await docStore.addDocument(DocumentModel(
                             name: _documentName!,
-                            fileBytes: _documentFile!.readAsBytesSync(),
+                            fileBytes: bytes,
                             fileType: _fileType!,
                             fileName: _fileName!,
                             fileExtension:

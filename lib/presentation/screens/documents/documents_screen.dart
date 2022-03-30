@@ -27,38 +27,46 @@ class _DocumentsScreenState extends State<DocumentsScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Observer(builder: (_) {
-      switch (widget.store.getDocumentsFuture.status) {
+      switch (widget.store.getDocumentsFuture!.status) {
         case FutureStatus.pending:
           return const Center(child: CircularProgressIndicator());
         case FutureStatus.rejected:
           return const Center(child: Text('Error'));
         case FutureStatus.fulfilled:
-          return Container(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                TextButton.icon(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, Routes.addDocument),
-                  icon: const Icon(Icons.add),
-                  label: const Text('Add Document'),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: widget.store.documentList.length,
-                    itemBuilder: (_, index) {
-                      final DocumentModel document =
-                          widget.store.documentList[index];
+          return widget.store.errorText != null
+              ? Center(
+                  child: Text(widget.store.errorText!),
+                )
+              : Container(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      TextButton.icon(
+                        onPressed: () =>
+                            Navigator.pushNamed(context, Routes.addDocument),
+                        icon: const Icon(Icons.add),
+                        label: const Text('Add Document'),
+                      ),
+                      Expanded(
+                        child: widget.store.documentList.isEmpty
+                            ? const Center(
+                                child: Text('No Documents Found'),
+                              )
+                            : ListView.builder(
+                                itemCount: widget.store.documentList.length,
+                                itemBuilder: (_, index) {
+                                  final DocumentModel document =
+                                      widget.store.documentList[index];
 
-                      return DocumentCard(
-                          document: document, documentKey: index);
-                    },
+                                  return DocumentCard(
+                                      document: document, docIndex: index);
+                                },
+                              ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          );
+                );
       }
     });
   }

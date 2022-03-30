@@ -28,15 +28,32 @@ mixin _$DocumentsStore on DocumentsStoreBase, Store {
       Atom(name: 'DocumentsStoreBase.getDocumentsFuture');
 
   @override
-  ObservableFuture<dynamic> get getDocumentsFuture {
+  ObservableFuture<Either<AppError, List<DocumentModel>>>?
+      get getDocumentsFuture {
     _$getDocumentsFutureAtom.reportRead();
     return super.getDocumentsFuture;
   }
 
   @override
-  set getDocumentsFuture(ObservableFuture<dynamic> value) {
+  set getDocumentsFuture(
+      ObservableFuture<Either<AppError, List<DocumentModel>>>? value) {
     _$getDocumentsFutureAtom.reportWrite(value, super.getDocumentsFuture, () {
       super.getDocumentsFuture = value;
+    });
+  }
+
+  final _$errorTextAtom = Atom(name: 'DocumentsStoreBase.errorText');
+
+  @override
+  String? get errorText {
+    _$errorTextAtom.reportRead();
+    return super.errorText;
+  }
+
+  @override
+  set errorText(String? value) {
+    _$errorTextAtom.reportWrite(value, super.errorText, () {
+      super.errorText = value;
     });
   }
 
@@ -56,11 +73,20 @@ mixin _$DocumentsStore on DocumentsStoreBase, Store {
     return _$addDocumentAsyncAction.run(() => super.addDocument(document));
   }
 
+  final _$deleteDocumentAsyncAction =
+      AsyncAction('DocumentsStoreBase.deleteDocument');
+
+  @override
+  Future<void> deleteDocument(int index) {
+    return _$deleteDocumentAsyncAction.run(() => super.deleteDocument(index));
+  }
+
   @override
   String toString() {
     return '''
 documentList: ${documentList},
-getDocumentsFuture: ${getDocumentsFuture}
+getDocumentsFuture: ${getDocumentsFuture},
+errorText: ${errorText}
     ''';
   }
 }

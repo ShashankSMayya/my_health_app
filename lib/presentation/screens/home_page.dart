@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
                       text: 'Resources',
                     ),
                     Tab(
-                      text: 'Documents',
+                      text: 'Documents'
                     ),
                     Tab(
                       text: 'Profile',

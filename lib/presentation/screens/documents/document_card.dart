@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:my_health_app/data/constants/enums.dart';
-import 'package:my_health_app/data/constants/hive_constants.dart';
 import 'package:my_health_app/data/models/document_model.dart';
+import 'package:my_health_app/presentation/stores/documents_store.dart';
+import 'package:provider/provider.dart';
 
 class DocumentCard extends StatelessWidget {
   final DocumentModel document;
 
   //This Key is used to identify the document key in Hive Box used for updating and deleting the document.
-  final int documentKey;
+  final int docIndex;
 
   const DocumentCard(
-      {Key? key, required this.document, required this.documentKey})
+      {Key? key, required this.document, required this.docIndex})
       : super(key: key);
 
   @override
@@ -31,7 +31,10 @@ class DocumentCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           document.fileType == FileTypes.pdf
-              ? const Icon(Icons.description,size: 50,)
+              ? const Icon(
+                  Icons.description,
+                  size: 50,
+                )
               : Image.memory(document.fileBytes, height: 50, width: 50),
           const Gap(20),
           Expanded(
@@ -78,9 +81,7 @@ class DocumentCard extends StatelessWidget {
               size: 24,
             ),
             onTap: () async {
-              final box = Hive.box<DocumentModel>(HiveBoxNames.documentBoxName);
-              print(documentKey);
-              await box.deleteAt(documentKey);
+              context.read<DocumentsStore>().deleteDocument(docIndex);
             },
           ),
         ],
